@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 15:12:02 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/09 18:06:24 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/09 18:13:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ int main(int argc, char **argv)
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 2000, 1300, "test");
 	map = read_file(argv[1], mlx_ptr, win_ptr);
-	//calculate_dots(map);
-	//draw_map(map);
 	mlx_loop_hook(mlx_ptr, &draw_dots, map);
 	mlx_hook(win_ptr, 3, 0, &key_release, NULL);
 	mlx_hook(win_ptr, 17, 0, &close_window, NULL);
