@@ -3,18 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/08 17:22:13 by marvin            #+#    #+#              #
-#    Updated: 2019/01/08 17:51:11 by marvin           ###   ########.fr        #
+#    Updated: 2019/01/09 17:24:25 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = fdf
-FLAGS       = -Wall -Wextra -Werror
+FLAGS       = -Wall -Wextra -Werror -O0 -g
 SRC_DIR		= ./srcs
 OBJ_DIR		= ./obj
-CFILES		= main.c get_next_line.c read_file.c map.c
+CFILES		= main.c get_next_line.c read_file.c map.c hooks.c dot.c
 OFILES		= $(CFILES:.c=.o)
 RAW_CFILES	= $(addprefix $(SRC_DIR)/,$(CFILES))
 RAW_OFILES	= $(addprefix $(OBJ_DIR)/,$(OFILES))
@@ -29,7 +29,7 @@ $(NAME): $(RAW_OFILES)
 		gcc $(RAW_OFILES) libft/libft.a minilibx_macos/libmlx.a -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit -I ./includes -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-		gcc -Wall -Wextra -Werror -I ./includes -I /usr/local/include -c $< -o $@
+		gcc $(FLAGS) -I ./includes -I /usr/local/include -c $< -o $@
 clean:
 		make clean -C ./minilibx_macos
 		make clean -C ./libft

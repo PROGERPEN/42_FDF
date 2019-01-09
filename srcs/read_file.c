@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 17:48:48 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/08 17:52:00 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/09 15:50:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int **fill_map(int lines, int symbols, int fd)
 	return (map);
 }
 
-t_map *read_file(char *file_name)
+t_map *read_file(char *file_name, void *mlx_ptr, void *win_ptr)
 {
 	int height;
 	int width;
@@ -88,6 +88,8 @@ t_map *read_file(char *file_name)
 	fd = open(file_name, O_RDONLY);
 	map_arr = fill_map(height, width, fd);
 	map = create_map(width, height, map_arr);
+	map->mlx_ptr = mlx_ptr;
+	map->win_ptr = win_ptr;
 	return (map);
 }
 
