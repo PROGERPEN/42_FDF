@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmacgyve <fmacgyve@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:58:48 by fmacgyve          #+#    #+#             */
-/*   Updated: 2019/01/08 14:58:17 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/19 17:00:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,6 @@ int				get_next_line(const int fd, char **line)
 		return (1);
 	}
 	if (!file->read_res)
-		return (0);
+		return (file->fd = 0);
 	return (trim(file, line));
 }

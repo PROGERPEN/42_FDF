@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 17:48:48 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/09 15:50:27 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/19 17:52:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,19 @@ static int count(int *height, int *width, int fd)
 	return (1);
 }
 
+static void read_coord_and_color(char *str, int *coord, int *color)
+{
+	char **split_res;
 
-static int **fill_map(int lines, int symbols, int fd)
+	split_res = ft_strsplit(str, ',');
+	*coord = ft_atoi(split_res[0]);
+	*color = 0xFFFFFF;
+
+	if (split_res[1])
+		*color = color_str_to_int(split_res[1]);
+}
+
+static int **fill_map(int lines, int symbols, int **colors, int fd)
 {
 	int		**map;
 	char	*line;
@@ -61,9 +72,10 @@ static int **fill_map(int lines, int symbols, int fd)
 		split_res = ft_strsplit(line, ' ');
 		x = 0;
 		map[y] = (int *)ft_memalloc(sizeof(int) * symbols);
+		colors[y] = (int *)ft_memalloc(sizeof(int) * symbols);
 		while(x < symbols)
 		{
-			map[y][x] = ft_atoi(split_res[x]);
+			read_coord_and_color(split_res[x], &(map[y][x]), &(colors[y][x]));
 			x++;
 		}
 		y++;
@@ -75,7 +87,6 @@ t_map *read_file(char *file_name, void *mlx_ptr, void *win_ptr)
 {
 	int height;
 	int width;
-	int	**map_arr;
 	t_map *map;
 	int	fd;
 
@@ -86,10 +97,8 @@ t_map *read_file(char *file_name, void *mlx_ptr, void *win_ptr)
 		return (0);
 	close(fd);
 	fd = open(file_name, O_RDONLY);
-	map_arr = fill_map(height, width, fd);
-	map = create_map(width, height, map_arr);
-	map->mlx_ptr = mlx_ptr;
-	map->win_ptr = win_ptr;
+	map = create_map(width, height, mlx_ptr, win_ptr);
+	map->map = fill_map(height, width, map->colors, fd);
 	return (map);
 }
 
