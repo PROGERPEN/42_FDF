@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 15:12:02 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/19 20:31:12 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/19 20:32:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ void segment(int x0, int y0, int x1, int y1, t_map *map)
     }
   }
 }
-
-
 
 int draw_lines(t_map *map)
 {
