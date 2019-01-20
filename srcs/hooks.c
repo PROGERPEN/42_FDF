@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 15:10:43 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/19 19:29:17 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 16:42:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int key_press(int keycode, t_map *map)
 {
-	mlx_clear_window(map->mlx_ptr, map->win_ptr);
+	map->image = create_new_image(map);
 	if (keycode == 124)
 		map->z_angle -= 0.1;
 	if (keycode == 123)
@@ -28,7 +28,6 @@ int key_press(int keycode, t_map *map)
 
 int key_release(int keycode, void *param)
 {
-
 	if (keycode == 53)
 		close_window(param);
 	return (0);
@@ -38,11 +37,11 @@ int mouse_release(int button, int x, int y, t_map *map)
 {
 	(void)x;
 	(void)y;
-	mlx_clear_window(map->mlx_ptr, map->win_ptr);
+	map->image = create_new_image(map);
 	if (button == 4)
 		map->zoom++;
 	if (button == 5 && map->zoom >0)
-			map->zoom--;
+		map->zoom--;
 	return (0);
 }
 

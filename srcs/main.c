@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 15:12:02 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/19 20:32:15 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 16:37:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,50 +24,7 @@ void iso(int *x, int *y, int z)
 	*y = -z + (prev_x + prev_y) * sin(0.523599);
 }
 
-void segment(int x0, int y0, int x1, int y1, t_map *map)
-{
-  int dx = abs(x1 - x0);
-  int dy = abs(y1 - y0);
-  int sx = x1 >= x0 ? 1 : -1;
-  int sy = y1 >= y0 ? 1 : -1;
-
-  if (dy <= dx)
-  {
-    int d = (dy << 1) - dx;
-    int d1 = dy << 1;
-    int d2 = (dy - dx) << 1;
-    for(int x = x0 + sx, y = y0, i = 1; i <= dx; i++, x += sx)
-    {
-      if ( d >0)
-      {
-        d += d2;
-        y += sy;
-      }
-      else
-        d += d1;
-    	mlx_pixel_put(map->mlx_ptr, map->win_ptr, x, y, 0xFFFFFF);
-    }
-  }
-  else
-  {
-    int d = (dx << 1) - dy;
-    int d1 = dx << 1;
-    int d2 = (dx - dy) << 1;
-    for(int y = y0 + sy, x = x0, i = 1; i <= dy; i++, y += sy)
-    {
-      if ( d >0)
-      {
-        d += d2;
-        x += sx;
-      }
-      else
-        d += d1;
-    	mlx_pixel_put(map->mlx_ptr, map->win_ptr, x, y, 0xFFFFFF);
-    }
-  }
-}
-
-int draw_lines(t_map *map)
+/*int draw_lines(t_map *map)
 {
 	int i;
 
@@ -104,7 +61,7 @@ int draw_all(t_map *map)
 	draw_lines(map);
 	draw_dots(map);
 	return (0);
-}
+}*/
 
 void rotate_z(int *x, int *y, double angle)
 {
@@ -158,6 +115,19 @@ void calculate_dots(t_map *map)
 	}
 }
 
+int draw_on_update(t_map *map)
+{
+	if (map->prev_image != map->image)
+	{
+		draw_all_on_image(map);
+		if (map->prev_image)
+			mlx_destroy_image(map->mlx_ptr, map->prev_image);
+		map->prev_image = map->image;
+		mlx_put_image_to_window(map->mlx_ptr, map->win_ptr, map->image, 0, 0);
+	}
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
 	void	*mlx_ptr;
@@ -169,7 +139,9 @@ int main(int argc, char **argv)
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 2000, 1300, "test");
 	map = read_file(argv[1], mlx_ptr, win_ptr);
-	mlx_loop_hook(mlx_ptr, &draw_all, map);
+	map->image = create_new_image(map);
+	draw_all_on_image(map);
+	mlx_loop_hook(mlx_ptr, &draw_on_update, map);
 	mlx_hook(win_ptr, 3, 0, &key_release, map);
 	mlx_hook(win_ptr, 2, 0, &key_press, map);
 	mlx_hook(win_ptr, 17, 0, &close_window, NULL);

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:16:23 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/19 19:37:33 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 16:28:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef	struct	s_map
 	int			**colors;
 	void		*mlx_ptr;
 	void		*win_ptr;
+	void		*image;
+	void		*prev_image;
+	int			size_line;
 	double		z_angle;
 	double		x_angle;
 	t_dot		**dots;
@@ -48,5 +51,7 @@ int		mouse_release(int button, int x, int y, t_map *map);
 t_dot *create_dot(int x, int y, int color);
 void	calculate_dots(t_map *map);
 int		erase_dots(t_map *map);
+void *create_new_image(t_map *map);
 int	color_str_to_int(char *str);
+void draw_all_on_image(t_map *map);
 #endif
