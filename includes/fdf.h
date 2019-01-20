@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:16:23 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/20 16:28:49 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 17:35:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef	struct	s_map
 	int			size_line;
 	double		z_angle;
 	double		x_angle;
+	double		y_angle;
 	t_dot		**dots;
 }				t_map;
 

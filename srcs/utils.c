@@ -6,13 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 15:47:27 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/19 18:10:30 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 17:21:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int find_index(char base[16], char symb)
+static int find_index(char base[16], char symb)
 {
 	int i;
 

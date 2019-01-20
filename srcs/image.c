@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/20 14:27:59 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/20 16:39:20 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 18:25:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void *create_new_image(t_map *map)
 	return (img_ptr);
 }
 
-void set_pixel_to_image(char *data_addr, int size_line, t_dot *dot)
+static void set_pixel_to_image(char *data_addr, int size_line, t_dot *dot)
 {
 	int *image;
 
@@ -31,17 +31,17 @@ void set_pixel_to_image(char *data_addr, int size_line, t_dot *dot)
 	}
 }
 
-void draw_dots_on_image(char *data_addr, t_map *map)
+static void draw_dots_on_image(char *data_addr, t_map *map)
 {
 	int i;
 
 	calculate_dots(map);
 	i = -1;
-	while (++i < map->height * map->width)
+	while (++i < map->height * map->width - 1)
 		set_pixel_to_image(data_addr, map->size_line, map->dots[i]);
 }
 
-void segment(int x0, int y0, int x1, int y1, t_map *map, char *data_addr)
+static void segment(int x0, int y0, int x1, int y1, t_map *map, char *data_addr)
 {
   int dx = abs(x1 - x0);
   int dy = abs(y1 - y0);
@@ -86,7 +86,7 @@ void segment(int x0, int y0, int x1, int y1, t_map *map, char *data_addr)
   }
 }
 
-void draw_lines_on_image(char *data_addr, t_map *map)
+static void draw_lines_on_image(char *data_addr, t_map *map)
 {
 	int i;
 
@@ -102,8 +102,6 @@ void draw_lines_on_image(char *data_addr, t_map *map)
 
 	}
 }
-
-
 
 void draw_all_on_image(t_map *map)
 {

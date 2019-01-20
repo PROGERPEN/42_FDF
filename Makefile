@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/08 17:22:13 by marvin            #+#    #+#              #
-#    Updated: 2019/01/20 14:38:47 by marvin           ###   ########.fr        #
+#    Updated: 2019/01/20 17:22:24 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME        = fdf
 FLAGS       = -Wall -Wextra -Werror -O0 -g
 SRC_DIR		= ./srcs
 OBJ_DIR		= ./obj
-CFILES		= main.c get_next_line.c read_file.c map.c hooks.c dot.c utils.c image.c
+CFILES		= main.c get_next_line.c read_file.c map.c hooks.c dot.c utils.c image.c calculate_dots.c
 OFILES		= $(CFILES:.c=.o)
 RAW_CFILES	= $(addprefix $(SRC_DIR)/,$(CFILES))
 RAW_OFILES	= $(addprefix $(OBJ_DIR)/,$(OFILES))

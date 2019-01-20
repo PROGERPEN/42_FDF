@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 15:10:43 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/20 16:42:37 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/20 17:40:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 int key_press(int keycode, t_map *map)
 {
 	map->image = create_new_image(map);
-	if (keycode == 124)
-		map->z_angle -= 0.1;
-	if (keycode == 123)
-		map->z_angle += 0.1;
-	if (keycode == 126)
+	if (keycode == 83)
 		map->x_angle -= 0.1;
-	if (keycode == 125)
+	if (keycode == 86)
 		map->x_angle += 0.1;
+	if (keycode == 84)
+		map->z_angle -= 0.1;
+	if (keycode == 86)
+		map->z_angle += 0.1;
+	if (keycode == 85)
+		map->y_angle -= 0.1;
+	if (keycode == 88)
+		map->y_angle += 0.1;
 	return (0);
 }
 
