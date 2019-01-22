@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/20 14:27:59 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/20 18:25:58 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/22 21:43:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void *create_new_image(t_map *map)
 {
 	void	*img_ptr;
 
-	img_ptr = mlx_new_image(map->mlx_ptr, 2000, 1300);
+	img_ptr = mlx_new_image(map->mlx_ptr, IMAGE_WIDTH, IMAGE_HEIGHT);
 	return (img_ptr);
 }
 
@@ -25,91 +25,137 @@ static void set_pixel_to_image(char *data_addr, int size_line, t_dot *dot)
 	int *image;
 
 	image = (int *)data_addr;
-	if (dot->x >=0 && dot->x < 2000 && dot->y >= 0 && dot->y < 1300)
+	if (dot->x >=0 && dot->x < IMAGE_WIDTH && dot->y >= 0 && dot->y < IMAGE_HEIGHT)
 	{
-		image[(size_line / 4) * dot->y + dot->x] = 0xFFFFFF;
+		image[(size_line / 4) * dot->y + dot->x] = dot->color;
 	}
 }
 
-static void draw_dots_on_image(char *data_addr, t_map *map)
+double percent(int start, int end, int current)
+{
+  double placement;
+	double distance;
+
+	placement = current - start;
+	distance = end - start;
+	return ((distance == 0) ? 1.0 : (placement / distance));
+}
+
+int get_light(int start, int end, double percentage)
+{
+	return ((int)((1 - percentage) * start + percentage * end));
+}
+
+int get_color(t_dot *current, t_dot *start, t_dot *end, t_dot *delta)
+{
+	int	 red;
+	int	 green;
+	int	 blue;
+	double  percentage;
+
+	if (start->color == end->color)
+		return (start->color);
+	if (delta->x > delta->y)
+		percentage = percent(start->x, end->x, current->x);
+	else
+		percentage = percent(start->y, end->y, current->y);
+	red = get_light((start->color >> 16) & 0xFF, (end->color >> 16) & 0xFF, percentage);
+	green = get_light((start->color >> 8) & 0xFF, (end->color >> 8) & 0xFF, percentage);
+	blue = get_light(start->color & 0xFF, end->color & 0xFF, percentage);
+	return ((red << 16) | (green << 8) | blue);
+}
+
+static void line_x(t_dot *dot1, t_dot *dot2, t_dot *delta, t_map *map)
+{
+  int   d;
+  int   i;
+  t_dot *iters;
+  t_dot *huita;
+  t_dot *dot;
+
+  d = (delta->y << 1) - delta->x;
+  huita = create_dot(delta->y << 1, (delta->y - delta->x) << 1, 0xFFFFFF);
+  iters = create_dot(dot1->x + (dot2->x >= dot1->x ? 1 : -1),  dot1->y, 0xFFFFFF);
+  i = 1;
+  while (i < delta->x)
+  {
+	if (d > 0)
+	{
+	  d += huita->y;
+	  iters->y += (dot2->y >= dot1->y ? 1 : -1);
+	}
+	else
+	  d += huita->x;
+	dot = create_dot(iters->x, iters->y, 0xFFFFFF);
+	dot->color = get_color(dot, dot1, dot2, delta);
+	set_pixel_to_image(map->data_addr, map->size_line, dot);
+	i++;
+	iters->x += (dot2->x >= dot1->x ? 1 : -1);
+  }
+}
+
+static void line_y(t_dot *dot1, t_dot *dot2, t_dot *delta, t_map *map)
+{
+  int   d;
+  int   i;
+  t_dot *huita;
+  t_dot *dot;
+  t_dot *iters;
+
+  huita = create_dot(delta->x << 1, (delta->x - delta->y) << 1, 0xFFFFFF);
+  iters = create_dot(dot1->x, dot1->y + (dot2->y >= dot1->y ? 1 : -1), 0xFFFFFF);
+  d = (delta->x << 1) - delta->y;
+  i = 1;
+  while (i < delta->y)
+  {
+	if ( d >0 )
+	{
+	  d += huita->y;
+	  iters->x += dot2->x >= dot1->x ? 1 : -1;
+	}
+	else
+	  d += huita->x;
+	dot = create_dot(iters->x, iters->y, 0xFFFFFF);
+	dot->color = get_color(dot, dot1, dot2, delta);
+	set_pixel_to_image(map->data_addr, map->size_line, dot);
+	i++;
+	iters->y += dot2->y >= dot1->y ? 1 : -1;
+  }
+}
+
+static void segment(t_dot *dot1, t_dot *dot2, t_map *map)
+{
+  t_dot *delta;
+
+	delta = create_dot(abs(dot2->x - dot1->x), abs(dot2->y - dot1->y), 0xFFFFFF);
+	if (delta->y <= delta->x)
+		line_x(dot1, dot2, delta, map);
+	else
+		line_y(dot1, dot2, delta, map);
+}
+
+static void draw_lines_on_image( t_map *map)
 {
 	int i;
 
-	calculate_dots(map);
 	i = -1;
-	while (++i < map->height * map->width - 1)
-		set_pixel_to_image(data_addr, map->size_line, map->dots[i]);
-}
-
-static void segment(int x0, int y0, int x1, int y1, t_map *map, char *data_addr)
-{
-  int dx = abs(x1 - x0);
-  int dy = abs(y1 - y0);
-  int sx = x1 >= x0 ? 1 : -1;
-  int sy = y1 >= y0 ? 1 : -1;
-
-  if (dy <= dx)
-  {
-    int d = (dy << 1) - dx;
-    int d1 = dy << 1;
-    int d2 = (dy - dx) << 1;
-    for(int x = x0 + sx, y = y0, i = 1; i <= dx; i++, x += sx)
-    {
-      if ( d >0)
-      {
-        d += d2;
-        y += sy;
-      }
-      else
-        d += d1;
-		t_dot *dot = create_dot(x, y, 0xFFFFFF);
-    	set_pixel_to_image(data_addr, map->size_line, dot);
-    }
-  }
-  else
-  {
-    int d = (dx << 1) - dy;
-    int d1 = dx << 1;
-    int d2 = (dx - dy) << 1;
-    for(int y = y0 + sy, x = x0, i = 1; i <= dy; i++, y += sy)
-    {
-      if ( d >0)
-      {
-        d += d2;
-        x += sx;
-      }
-      else
-        d += d1;
-    	t_dot *dot = create_dot(x, y, 0xFFFFFF);
-    	set_pixel_to_image(data_addr, map->size_line, dot);
-    }
-  }
-}
-
-static void draw_lines_on_image(char *data_addr, t_map *map)
-{
-	int i;
-
-	i = -1;
-	calculate_dots(map);
-
 	while (++i < map->height * map->width - 1)
 	{
 		if ((i + 1) % map->width != 0)
-			segment(map->dots[i]->x, map->dots[i]->y, map->dots[i + 1]->x , map->dots[i + 1]->y, map, data_addr);
+			segment(map->dots[i], map->dots[i + 1], map);
 		if (i < (map->height - 1) * map->width)
-			segment(map->dots[i]->x, map->dots[i]->y, map->dots[i + map->width]->x , map->dots[i + map->width]->y, map, data_addr);
-
+			segment(map->dots[i], map->dots[i + map->width], map);
 	}
 }
 
 void draw_all_on_image(t_map *map)
 {
-	char *data_addr;
 	int bits_per_pixel;
 	int endian;
 
-	data_addr = mlx_get_data_addr(map->image, &bits_per_pixel, &(map->size_line), &endian);
-	draw_dots_on_image(data_addr, map);
-	draw_lines_on_image(data_addr, map);
+	if (map->data_addr == NULL)
+		ft_strdel(&(map->data_addr));
+	map->data_addr = mlx_get_data_addr(map->image, &bits_per_pixel, &(map->size_line), &endian);
+  calculate_dots(&map);
+	draw_lines_on_image(map);
 }

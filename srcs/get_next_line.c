@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:58:48 by fmacgyve          #+#    #+#             */
-/*   Updated: 2019/01/19 17:00:41 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/22 21:39:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_file	*create_file(int fd)
 {
 	t_file *file;
 
-	file = (t_file *)malloc(sizeof(t_file));
+	file = (t_file *)ft_memalloc(sizeof(t_file));
 	file->fd = fd;
 	file->read_res = 0;
 	file->next = NULL;

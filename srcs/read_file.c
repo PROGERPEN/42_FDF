@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 17:48:48 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/19 17:52:43 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/22 21:40:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@ static int count(int *height, int *width, int fd)
 	int		lines;
 	int		len;
 	char	**split_res;
+	int		gnl_ret;
 
 	lines = 0;
 	len = -1;
-	while(get_next_line(fd, &line))
+	while((gnl_ret = get_next_line(fd, &line)))
 	{
+		if (gnl_ret == -1)
+			return(0);
 		lines++;
 		split_res = ft_strsplit(line, ' ');
 		if (len == -1)
@@ -66,13 +69,13 @@ static int **fill_map(int lines, int symbols, int **colors, int fd)
 	int		x;
 
 	y = 0;
-	map = (int **)ft_memalloc(sizeof(int *) * lines);
+	NULL_CHECK((map = (int **)ft_memalloc(sizeof(int *) * lines)));
 	while(get_next_line(fd, &line))
 	{
 		split_res = ft_strsplit(line, ' ');
 		x = 0;
-		map[y] = (int *)ft_memalloc(sizeof(int) * symbols);
-		colors[y] = (int *)ft_memalloc(sizeof(int) * symbols);
+		NULL_CHECK((map[y] = (int *)ft_memalloc(sizeof(int) * symbols)));
+		NULL_CHECK((colors[y] = (int *)ft_memalloc(sizeof(int) * symbols)));
 		while(x < symbols)
 		{
 			read_coord_and_color(split_res[x], &(map[y][x]), &(colors[y][x]));
@@ -94,7 +97,7 @@ t_map *read_file(char *file_name, void *mlx_ptr, void *win_ptr)
 	height = 0;
 	width = 0;
 	if (!count(&height, &width, fd))
-		return (0);
+		return (NULL);
 	close(fd);
 	fd = open(file_name, O_RDONLY);
 	map = create_map(width, height, mlx_ptr, win_ptr);
