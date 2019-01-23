@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 15:12:02 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/23 15:17:59 by fkhrazz          ###   ########.fr       */
+/*   Updated: 2019/01/23 15:48:02 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,16 @@ int	draw_on_update(t_map *map)
 int	draw_interface(t_map *map)
 {
 	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 10, W, "Controls:");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			10, 30, 0xFFFFFF, "Scroll up/down - zoom");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			10, 50, 0xFFFFFF, "Arrows - movement");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			10, 70, 0xFFFFFF, "P - change projection");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			10, 90, 0xFFFFFF, "Rotating on numpad:");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			30, 110, 0xFFFFFF, "4/1 - x axis");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			30, 130, 0xFFFFFF, "5/2 - y axis");
-	mlx_string_put(map->mlx_ptr, map->win_ptr,
-			30, 150, 0xFFFFFF, "6/3 - z axis");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 30,
+			W, "Scroll up/down - zoom");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 50, W, "Arrows - movement");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 70,
+			W, "P - change projection");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 90,
+			W, "Rotating on numpad:");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 30, 110, W, "4/1 - x axis");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 30, 130, W, "5/2 - y axis");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 30, 150, W, "6/3 - z axis");
 	return (0);
 }
 
