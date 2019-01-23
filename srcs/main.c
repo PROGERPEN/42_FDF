@@ -6,13 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 15:12:02 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/22 21:25:41 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/23 15:17:59 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int draw_on_update(t_map *map)
+int	draw_on_update(t_map *map)
 {
 	if (map->prev_image != map->image)
 	{
@@ -25,20 +25,27 @@ int draw_on_update(t_map *map)
 	return (0);
 }
 
-int draw_interface(t_map *map)
+int	draw_interface(t_map *map)
 {
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 10, 0xFFFFFF, "Controls:");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 30, 0xFFFFFF, "Scroll up/down - zoom");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 50, 0xFFFFFF, "Arrows - movement");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 70, 0xFFFFFF, "P - change projection");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 90, 0xFFFFFF, "Rotating on numpad:");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 30, 110, 0xFFFFFF, "4/1 - x axis");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 30, 130, 0xFFFFFF, "5/2 - y axis");
-	mlx_string_put(map->mlx_ptr, map->win_ptr, 30, 150, 0xFFFFFF, "6/3 - z axis");
+	mlx_string_put(map->mlx_ptr, map->win_ptr, 10, 10, W, "Controls:");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			10, 30, 0xFFFFFF, "Scroll up/down - zoom");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			10, 50, 0xFFFFFF, "Arrows - movement");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			10, 70, 0xFFFFFF, "P - change projection");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			10, 90, 0xFFFFFF, "Rotating on numpad:");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			30, 110, 0xFFFFFF, "4/1 - x axis");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			30, 130, 0xFFFFFF, "5/2 - y axis");
+	mlx_string_put(map->mlx_ptr, map->win_ptr,
+			30, 150, 0xFFFFFF, "6/3 - z axis");
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -64,4 +71,3 @@ int main(int argc, char **argv)
 	mlx_hook(win_ptr, 4, 0, &mouse_release, map);
 	mlx_loop(mlx_ptr);
 }
-

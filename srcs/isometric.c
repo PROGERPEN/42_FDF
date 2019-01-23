@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dot.c                                              :+:      :+:    :+:   */
+/*   isometric.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fkhrazz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/09 17:13:05 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/23 12:23:43 by fkhrazz          ###   ########.fr       */
+/*   Created: 2019/01/23 12:33:17 by fkhrazz           #+#    #+#             */
+/*   Updated: 2019/01/23 12:33:58 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_dot	*create_dot(int x, int y, int color)
+void	transform(int *x, int *y, int z)
 {
-	t_dot *dot;
+	int prev_x;
+	int prev_y;
 
-	NULL_CHECK((dot = (t_dot *)ft_memalloc(sizeof(t_dot))));
-	dot->x = x;
-	dot->y = y;
-	dot->color = color;
-	return (dot);
+	prev_x = *x;
+	prev_y = *y;
+	*x = (prev_x - prev_y) * cos(0.523599);
+	*y = -z + (prev_x + prev_y) * sin(0.523599);
 }

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:16:23 by marvin            #+#    #+#             */
-/*   Updated: 2019/01/22 21:35:30 by marvin           ###   ########.fr       */
+/*   Updated: 2019/01/23 15:16:00 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@
 #include "libft.h"
 #include "get_next_line.h"
 
-# define WINDOW_HEIGHT		1300
-# define	WINDOW_WIDTH	1550
+# define WINDOW_HEIGHT		1400
+# define WINDOW_WIDTH	2400
 # define IMAGE_HEIGHT		1300
-# define IMAGE_WIDTH		1300
+# define IMAGE_WIDTH		2300
 # define NULL_CHECK(val) if (val == NULL) exit(12);
+# define W 0xFFFFFF
 
 typedef struct	s_dot
 {
@@ -64,4 +65,13 @@ int		erase_dots(t_map *map);
 void *create_new_image(t_map *map);
 int	color_str_to_int(char *str);
 void draw_all_on_image(t_map *map);
+void	transform(int *x, int *y, int z);
+void		*create_new_image(t_map *map);
+double		percent(int start, int end, int current);
+int			get_light(int start, int end, double percentage);
+int			get_color(t_dot *current, t_dot *start, t_dot *end, t_dot *delta);
+int			get_light(int start, int end, double percentage);
+int			get_color(t_dot *current, t_dot *start, t_dot *end, t_dot *delta);
+void		draw_all_on_image(t_map *map);
+void		draw_lines_on_image(t_map *map);
 #endif
